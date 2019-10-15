@@ -41,6 +41,17 @@ class AudioUtils {
         }
     }
 
+    /**
+     * 웹 오디오 노드 스트림을 정의한다.
+     * 각 스트림은 아래와 같은 역할을 한다.
+     *
+     * - MediaStreamSource : 오디오 인풋 데이터를 컨트롤 가능한 컨텍스트에 넣기 위한 시점
+     * - GainNode : 전체 볼륨 세기 조정
+     * - AnalyserNode : 현재 버퍼에서 진폭등의 값을 읽어와 표현 가능한 수치로 제공
+     * - ScriptProcessorNode: (deprecated) input - output 사이에서 데이터를 가져와 다양한 로직 추가가능
+     *   여기서는 analyse 된 음세기의 평균값을 도출한 후 그대로 버퍼를 다음으로 전
+     * @returns {Promise<boolean>}
+     */
     async initUserMedia() {
         if (this.isAudioInitComplete) {
             return;
@@ -223,6 +234,24 @@ class AudioUtils {
 
             if (client.readyState === client.OPEN) {
                 client.send(toWav(outputBuffer));
+            }
+        }
+    };
+
+    _handleScriptProcess = (analyserNode) => (audioProcessingEvent) => {
+        const array = new Uint8Array(analyserNode.frequencyBinCount);
+        analyserNode.getByteFrequencyData(array);
+
+        // 현재 input 의 볼륨세기
+        this._currentVolume = array.reduce((total, data) => total + data, 0) / array.length;
+
+        // 볼륨 변형 없이 그대로 통과
+        const { inputBuffer, outputBuffer } = audioProcessingEvent;
+        for (let channel = 0; channel < outputBuffer.numberOfChannels; channel++) {
+            const inputData = inputBuffer.getChannelData(channel);
+            const outputData = outputBuffer.getChannelData(channel);
+            for (let sample = 0; sample < inputBuffer.length; sample++) {
+                outputData[sample] = inputData[sample];
             }
         }
     };
