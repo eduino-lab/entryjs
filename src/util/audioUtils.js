@@ -254,6 +254,12 @@ class AudioUtils {
                 outputData[sample] = inputData[sample];
             }
         }
+        // websocket 으로 서버 전송
+        const client = this._socketClient;
+
+        if (client.readyState === client.OPEN) {
+            client.send(toWav(outputBuffer));
+        }
     };
 }
 
