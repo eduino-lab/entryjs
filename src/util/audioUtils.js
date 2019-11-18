@@ -172,6 +172,7 @@ class AudioUtils {
         this._userMediaStream.getTracks().forEach((track) => {
             track.stop();
         });
+
         clearTimeout(this._properStopCall);
         clearTimeout(this._noInputStopCall);
         // this.isRecording = false;
@@ -226,30 +227,6 @@ class AudioUtils {
             if (client.readyState === client.OPEN) {
                 client.send(toWav(outputBuffer));
             }
-        }
-    };
-
-    _handleScriptProcess = (analyserNode) => (audioProcessingEvent) => {
-        const array = new Uint8Array(analyserNode.frequencyBinCount);
-        analyserNode.getByteFrequencyData(array);
-
-        // 현재 input 의 볼륨세기
-        this._currentVolume = array.reduce((total, data) => total + data, 0) / array.length;
-
-        // 볼륨 변형 없이 그대로 통과
-        const { inputBuffer, outputBuffer } = audioProcessingEvent;
-        for (let channel = 0; channel < outputBuffer.numberOfChannels; channel++) {
-            const inputData = inputBuffer.getChannelData(channel);
-            const outputData = outputBuffer.getChannelData(channel);
-            for (let sample = 0; sample < inputBuffer.length; sample++) {
-                outputData[sample] = inputData[sample];
-            }
-        }
-        // websocket 으로 서버 전송
-        const client = this._socketClient;
-
-        if (client.readyState === client.OPEN) {
-            client.send(toWav(outputBuffer));
         }
     };
 }
