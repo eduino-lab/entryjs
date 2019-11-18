@@ -40,7 +40,6 @@ class AudioUtils {
             return false;
         }
     }
-
     /**
      * 웹 오디오 노드 스트림을 정의한다.
      * 각 스트림은 아래와 같은 역할을 한다.
@@ -126,6 +125,7 @@ class AudioUtils {
                         this._socketClient.disconnect();
                         this.stopRecord();
                         resolve('');
+                        this.stopRecord();
                         break;
                     default:
                         const parsed = JSON.parse(e);

@@ -3,19 +3,38 @@ import audioUtils from '../../util/audioUtils';
 module.exports = {
     getBlocks() {
         return {
+            check_microphone: {
+                color: EntryStatic.colorSet.block.default.CALC,
+                outerLine: EntryStatic.colorSet.block.darken.CALC,
+                skeleton: 'basic_string_field',
+                statements: [],
+                template: '마이크가 연결되었는가?',
+                params: [],
+                events: {},
+                def: {
+                    type: 'check_microphone',
+                },
+                paramsKeyMap: {
+                    VALUE: 0,
+                },
+                class: 'test',
+                isNotFor: [],
+                async func(sprite, script) {
+                    const result = await audioUtils.checkUserMicAvailable();
+                    console.log(result);
+                    return result.toString();
+                },
+                syntax: {
+                    js: [],
+                    py: [],
+                },
+            },
             toggle_microphone: {
                 color: EntryStatic.colorSet.block.default.CALC,
                 outerLine: EntryStatic.colorSet.block.darken.CALC,
                 skeleton: 'basic_string_field',
                 statements: [],
-                template: '%1 초간의 음성을 문자로 바꾼 값',
-                params: [
-                    {
-                        type: 'Block',
-                        accept: 'string',
-                        defaultType: 'number',
-                    },
-                ],
+                template: '음성을 문자로 바꾼 값',
                 events: {},
                 def: {
                     params: [3],
@@ -26,27 +45,37 @@ module.exports = {
                 },
                 class: 'test',
                 isNotFor: [],
-                func(sprite, script) {
-                    if (!Entry.microphone) {
-                        Entry.microphone = {
-                            isPending: false,
-                        };
+                async func(sprite, script) {
+                    if (!audioUtils.isAudioInitComplete) {
+                        await audioUtils.initUserMedia();
                     }
-
-                    const value = script.getValue('VALUE');
-                    const { result, isPending } = Entry.microphone;
-
-                    if (!audioUtils.isAudioSupport) {
-                        // Browser 미지원
-                        throw new Error('브라우저가 미지원입니다.');
-                    }
-
-                    if (isPending) {
-                        throw new Entry.Utils.AsyncError();
-                    }
-                    if (result) {
-                        delete Entry.microphone.result;
-                        return result;
+                    let result = await audioUtils.startRecord(10 * 1000);
+                    return result;
+                },
+                syntax: {
+                    js: [],
+                    py: [],
+                },
+            },
+            get_microphone_volume: {
+                color: EntryStatic.colorSet.block.default.CALC,
+                outerLine: EntryStatic.colorSet.block.darken.CALC,
+                skeleton: 'basic_string_field',
+                statements: [],
+                template: '마이크 소릿값',
+                params: [],
+                events: {},
+                def: {
+                    type: 'get_microphone_volume',
+                },
+                paramsKeyMap: {
+                    VALUE: 0,
+                },
+                class: 'test',
+                isNotFor: [],
+                async func(sprite, script) {
+                    if (!audioUtils.isAudioInitComplete) {
+                        await audioUtils.initUserMedia();
                     }
 
                     Entry.microphone.isPending = true;
