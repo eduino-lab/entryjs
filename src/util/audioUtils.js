@@ -114,9 +114,6 @@ class AudioUtils {
                         this._socketClient.disconnect();
                         this.stopRecord();
                         resolve('');
-                        this.stopRecord();
-                        resolve('');
-                        this.stopRecord();
                         break;
                     default:
                         const parsed = JSON.parse(e);
