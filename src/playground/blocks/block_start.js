@@ -1,5 +1,3 @@
-import audioUtils from '../../util/audioUtils';
-
 module.exports = {
     getBlocks() {
         return {
