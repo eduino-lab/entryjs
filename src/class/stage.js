@@ -89,7 +89,6 @@ Entry.Stage.prototype.initStage = function(canvas) {
 
     _addEventListener('canvasClick', () => (Entry.stage.isObjectClick = false));
     _addEventListener('loadComplete', this.sortZorder.bind(this));
-
     Entry.windowResized.attach(this, this.updateBoundRect.bind(this));
 
     const razyScroll = _.debounce(() => {
@@ -142,6 +141,7 @@ Entry.Stage.prototype.initStage = function(canvas) {
     });
 
     this.initWall();
+    this.initAudioShade();
     this.render();
     this.dropper = Extension.getExtension('Dropper');
 };
@@ -536,6 +536,11 @@ Entry.Stage.prototype.initWall = function() {
 
     this.canvas.addChild(wall);
     this.wall = wall;
+};
+
+Entry.Stage.prototype.initAudioShade = function() {
+    const audioShade = GEHelper.newContainer('audioShade');
+    audioShade.mouseEnabled = false;
 };
 
 /**
