@@ -132,6 +132,7 @@ class AudioUtils {
             });
             this._properStopCall = setTimeout(this.stopRecord, recordMilliSecond);
             this._noInputStopCall = setTimeout(() => {
+                Entry.dispatchEvent('audioRecordingDone');
                 this.stopRecord();
                 clearTimeout(this._properStopCall);
             }, 3000);
@@ -169,7 +170,6 @@ class AudioUtils {
         this._userMediaStream.getTracks().forEach((track) => {
             track.stop();
         });
-
         clearTimeout(this._properStopCall);
         clearTimeout(this._noInputStopCall);
         // this.isRecording = false;
