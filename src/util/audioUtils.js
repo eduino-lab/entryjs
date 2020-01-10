@@ -132,7 +132,6 @@ class AudioUtils {
             });
             this._properStopCall = setTimeout(this.stopRecord, recordMilliSecond);
             this._noInputStopCall = setTimeout(() => {
-                Entry.dispatchEvent('audioRecordingDone');
                 this.stopRecord();
                 clearTimeout(this._properStopCall);
             }, 3000);
