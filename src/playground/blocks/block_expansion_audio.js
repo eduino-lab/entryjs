@@ -42,8 +42,8 @@ Entry.EXPANSION_BLOCK.audio.getBlocks = function() {
             events: {},
         },
         check_microphone: {
-            color: EntryStatic.colorSet.block.default.CALC,
-            outerLine: EntryStatic.colorSet.block.darken.CALC,
+            color: EntryStatic.colorSet.block.default.EXPANSION,
+            outerLine: EntryStatic.colorSet.block.darken.EXPANSION,
             skeleton: 'basic_string_field',
             statements: [],
             template: '마이크가 연결되었는가?',
@@ -66,9 +66,9 @@ Entry.EXPANSION_BLOCK.audio.getBlocks = function() {
                 py: [],
             },
         },
-        toggle_microphone: {
-            color: EntryStatic.colorSet.block.default.CALC,
-            outerLine: EntryStatic.colorSet.block.darken.CALC,
+        speech_to_text: {
+            color: EntryStatic.colorSet.block.default.EXPANSION,
+            outerLine: EntryStatic.colorSet.block.darken.EXPANSION,
             skeleton: 'basic_string_field',
             statements: [],
             template: '음성을 문자로 바꾼 값',
@@ -106,8 +106,8 @@ Entry.EXPANSION_BLOCK.audio.getBlocks = function() {
             },
         },
         get_microphone_volume: {
-            color: EntryStatic.colorSet.block.default.CALC,
-            outerLine: EntryStatic.colorSet.block.darken.CALC,
+            color: EntryStatic.colorSet.block.default.EXPANSION,
+            outerLine: EntryStatic.colorSet.block.darken.EXPANSION,
             skeleton: 'basic_string_field',
             statements: [],
             template: '마이크 소릿값',
