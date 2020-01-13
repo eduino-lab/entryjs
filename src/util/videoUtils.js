@@ -109,7 +109,7 @@ class VideoUtils {
     // option change
     setOptions(target, value) {
         switch (target) {
-            case 'brightness':
+            case 'contrast':
                 this.setContrast(value);
                 break;
             case 'opacity':
