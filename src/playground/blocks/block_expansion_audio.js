@@ -75,7 +75,7 @@ Entry.EXPANSION_BLOCK.audio.getBlocks = function() {
             events: {},
             def: {
                 params: [3],
-                type: 'toggle_microphone',
+                type: 'speech_to_text',
             },
             paramsKeyMap: {
                 VALUE: 0,
@@ -96,7 +96,8 @@ Entry.EXPANSION_BLOCK.audio.getBlocks = function() {
                         Entry.dispatchEvent('audioRecordingDone');
                         resolve(result);
                     } catch (e) {
-                        resolve('default');
+                        console.log(e);
+                        resolve('error');
                     }
                 });
             },
