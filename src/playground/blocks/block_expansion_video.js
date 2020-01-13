@@ -1,5 +1,6 @@
-import audioUtils from '../../util/audioUtils';
+import VideoUtils from '../../util/videoUtils';
 import PromiseManager from '../../core/promiseManager';
+const _clamp = require('lodash/clamp');
 
 Entry.EXPANSION_BLOCK.video = {
     name: 'video',
@@ -46,7 +47,7 @@ Entry.EXPANSION_BLOCK.video.getBlocks = function() {
             outerLine: EntryStatic.colorSet.block.darken.EXPANSION,
             skeleton: 'basic_string_field',
             statements: [],
-            template: '웹캠이 연결되어있는가?',
+            template: '비디오가 연결되었는가?',
             params: [],
             events: {},
             def: {
@@ -57,9 +58,92 @@ Entry.EXPANSION_BLOCK.video.getBlocks = function() {
             },
             class: 'video',
             isNotFor: ['video'],
-            async func(sprite, script) {
-                const result = await audioUtils.checkUserMicAvailable();
+            func(sprite, script) {
+                const result = VideoUtils.checkUserCamAvailable();
                 return result.toString();
+            },
+            syntax: {
+                js: [],
+                py: [],
+            },
+        },
+        draw_webcam: {
+            color: EntryStatic.colorSet.block.default.EXPANSION,
+            outerLine: EntryStatic.colorSet.block.darken.EXPANSION,
+            skeleton: 'basic',
+            statements: [],
+            template: '비디오 화면 %1',
+            params: [
+                {
+                    type: 'Dropdown',
+                    options: [['보이기', 'on'], ['가리기', 'off']],
+                    value: 'on',
+                    fontSize: 11,
+                    bgColor: EntryStatic.colorSet.block.darken.EXPANSION,
+                    arrowColor: EntryStatic.colorSet.common.WHITE,
+                },
+            ],
+            events: {},
+            def: {
+                type: 'draw_webcam',
+            },
+            paramsKeyMap: {
+                VALUE: 0,
+            },
+            class: 'video',
+            isNotFor: ['video'],
+            func(sprite, script) {
+                const value = script.getField('VALUE');
+                VideoUtils.cameraSwitch(value);
+                return script.callReturn();
+            },
+            syntax: {
+                js: [],
+                py: [],
+            },
+        },
+        set_camera_option: {
+            color: EntryStatic.colorSet.block.default.EXPANSION,
+            outerLine: EntryStatic.colorSet.block.darken.EXPANSION,
+            skeleton: 'basic',
+            statements: [],
+            template: '비디오 %1 효과를 %2 으로 정하기',
+            params: [
+                {
+                    type: 'Dropdown',
+                    options: [['밝기', 'contrast'], ['투명도', 'opacity']],
+                    value: 'brightness',
+                    fontSize: 11,
+                    bgColor: EntryStatic.colorSet.block.darken.EXPANSION,
+                    arrowColor: EntryStatic.colorSet.common.WHITE,
+                },
+                {
+                    type: 'Block',
+                    accept: 'string',
+                    defaultType: 'number',
+                    value: '0',
+                },
+            ],
+            events: {},
+            def: {
+                type: 'set_camera_option',
+            },
+            paramsKeyMap: {
+                TARGET: 0,
+                VALUE: 1,
+            },
+            class: 'video',
+            isNotFor: ['video'],
+            func(sprite, script) {
+                const target = script.getField('TARGET');
+                let value = _clamp(
+                    script.getNumberValue('VALUE'),
+                    target === 'brightness' ? -100 : 0,
+                    100
+                );
+
+                VideoUtils.setOptions(target, value);
+                return script.callReturn();
             },
             syntax: {
                 js: [],

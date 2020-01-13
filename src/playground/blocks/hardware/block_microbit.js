@@ -4,7 +4,7 @@ const _set = require('lodash/set');
 const _get = require('lodash/get');
 const _merge = require('lodash/merge');
 
-Entry.Microbit = new class Microbit {
+Entry.Microbit = new (class Microbit {
     constructor() {
         this.id = '22.1';
         this.url = 'http://microbit.org/ko/';
@@ -127,7 +127,7 @@ Entry.Microbit = new class Microbit {
             Entry.engine.fireEvent('MicrobitRadioReceive');
         }
     }
-}();
+})();
 Entry.Microbit.blockMenuBlocks = [
     //region microbit
     'microbit_led_toggle',

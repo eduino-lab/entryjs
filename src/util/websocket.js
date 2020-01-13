@@ -1,4 +1,4 @@
-import audioUtils from './audioUtils';
+import AudioUtils from './AudioUtils';
 const io = require('socket.io-client');
 const GATEWAY_CONNECT_TIMEOUT = 5000;
 
@@ -22,7 +22,7 @@ export function voiceApiConnect(addr = ADDR, language = 'Kor', cb) {
         client.on('disconnect', () => {
             Entry.engine.hideAllAudioPanel();
             console.log('closed');
-            audioUtils.isRecording = false;
+            AudioUtils.isRecording = false;
         });
     });
 }

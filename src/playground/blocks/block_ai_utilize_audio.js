@@ -1,4 +1,4 @@
-import audioUtils from '../../util/audioUtils';
+import AudioUtils from '../../util/AudioUtils';
 import PromiseManager from '../../core/promiseManager';
 
 Entry.AI_UTILIZE_BLOCK.audio = {
@@ -83,16 +83,16 @@ Entry.AI_UTILIZE_BLOCK.audio.getBlocks = function() {
             class: 'audio',
             isNotFor: ['audio'],
             func(sprite, script) {
-                if (audioUtils.isRecording) {
+                if (AudioUtils.isRecording) {
                     throw new Entry.Utils.AsyncError();
                 }
-                audioUtils.isRecording = true;
+                AudioUtils.isRecording = true;
                 return new PromiseManager().Promise(async (resolve) => {
                     try {
-                        if (!audioUtils.isAudioInitComplete) {
-                            await audioUtils.initUserMedia();
+                        if (!AudioUtils.isAudioInitComplete) {
+                            await AudioUtils.initUserMedia();
                         }
-                        const result = await audioUtils.startRecord(10 * 1000);
+                        const result = await AudioUtils.startRecord(10 * 1000);
                         Entry.dispatchEvent('audioRecordingDone');
                         resolve(result);
                     } catch (e) {

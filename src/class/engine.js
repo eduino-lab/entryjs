@@ -4,7 +4,7 @@
 'use strict';
 
 import { GEHelper } from '../graphicEngine/GEHelper';
-import audioUtils from '../util/audioUtils';
+import AudioUtils from '../util/AudioUtils';
 
 /**
  * Class for a engine.
@@ -539,7 +539,7 @@ Entry.Engine = class Engine {
      */
     stop() {
         GEHelper.Ticker.reset();
-        audioUtils.stopRecord();
+        AudioUtils.stopRecord();
         clearInterval(this.ticker);
         this.ticker = null;
     }
@@ -682,7 +682,7 @@ Entry.Engine = class Engine {
         const variableContainer = Entry.variableContainer;
 
         Entry.Utils.blur();
-        audioUtils.stopRecord();
+        AudioUtils.stopRecord();
         Entry.addActivity('stop');
 
         container.mapEntity((entity) => {
