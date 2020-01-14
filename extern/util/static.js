@@ -391,6 +391,10 @@ EntryStatic.getAllBlocks = function() {
             ],
         },
         {
+            category: 'artificial_intelligence',
+            blocks: ['audio_title', 'check_microphone', 'speech_to_text', 'get_microphone_volume'],
+        },
+        {
             category: 'expansion',
             blocks: [
                 'expansionBlockAddButton',
