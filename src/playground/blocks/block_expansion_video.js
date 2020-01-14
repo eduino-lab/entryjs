@@ -59,8 +59,10 @@ Entry.EXPANSION_BLOCK.video.getBlocks = function() {
             class: 'video',
             isNotFor: ['video'],
             func(sprite, script) {
-                const result = VideoUtils.checkUserCamAvailable();
-                return result.toString();
+                return new PromiseManager().Promise(async (resolve) => {
+                    const result = await VideoUtils.checkUserCamAvailable();
+                    resolve(result.toString());
+                });
             },
             syntax: {
                 js: [],
