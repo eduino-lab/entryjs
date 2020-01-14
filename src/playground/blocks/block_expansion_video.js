@@ -76,7 +76,7 @@ Entry.EXPANSION_BLOCK.video.getBlocks = function() {
             params: [
                 {
                     type: 'Dropdown',
-                    options: [['보이기', 'on'], ['가리기', 'off']],
+                    options: [['보이기', 'on'], ['숨기기', 'off']],
                     value: 'on',
                     fontSize: 11,
                     bgColor: EntryStatic.colorSet.block.darken.EXPANSION,
@@ -111,7 +111,7 @@ Entry.EXPANSION_BLOCK.video.getBlocks = function() {
             params: [
                 {
                     type: 'Dropdown',
-                    options: [['밝기', 'contrast'], ['투명도', 'opacity']],
+                    options: [['밝기', 'brightness'], ['투명도', 'opacity']],
                     value: 'brightness',
                     fontSize: 11,
                     bgColor: EntryStatic.colorSet.block.darken.EXPANSION,
@@ -136,13 +136,49 @@ Entry.EXPANSION_BLOCK.video.getBlocks = function() {
             isNotFor: ['video'],
             func(sprite, script) {
                 const target = script.getField('TARGET');
-                let value = _clamp(
+                const value = _clamp(
                     script.getNumberValue('VALUE'),
                     target === 'brightness' ? -100 : 0,
                     100
                 );
 
                 VideoUtils.setOptions(target, value);
+                return script.callReturn();
+            },
+            syntax: {
+                js: [],
+                py: [],
+            },
+        },
+        flip_camera: {
+            color: EntryStatic.colorSet.block.default.EXPANSION,
+            outerLine: EntryStatic.colorSet.block.darken.EXPANSION,
+            skeleton: 'basic',
+            statements: [],
+            template: '비디오 화면 %1 뒤집기',
+            params: [
+                {
+                    type: 'Dropdown',
+                    options: [['좌우', 'hflip'], ['상하', 'vflip']],
+                    value: 'hflip',
+                    fontSize: 11,
+                    bgColor: EntryStatic.colorSet.block.darken.EXPANSION,
+                    arrowColor: EntryStatic.colorSet.common.WHITE,
+                },
+            ],
+            events: {},
+            def: {
+                type: 'flip_camera',
+            },
+            paramsKeyMap: {
+                TARGET: 0,
+            },
+            class: 'video',
+            isNotFor: ['video'],
+            func(sprite, script) {
+                const target = script.getField('TARGET');
+
+                VideoUtils.setOptions(target);
                 return script.callReturn();
             },
             syntax: {
