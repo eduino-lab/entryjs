@@ -6,23 +6,28 @@ class VideoUtils {
         this.isInitialized = false;
         this.video = null;
         this.canvasVideo = null;
+        this.flipStatus = {
+            horizontal: false,
+            vertical: false,
+        };
         this.initialize();
     }
 
     reset() {
-        if (this.canvasVideo) {
-            Entry.stage.canvas.removeChild(this.canvasVideo);
-        }
-        createjs.Ticker.on('tick', Entry.stage.canvas);
-
+        this.turnOffWebcam();
         this.canvasVideo = null;
-        this.isInitialized = false;
+        this.flipStatus = {
+            horizontal: false,
+            vertical: false,
+        };
     }
 
     async initialize() {
+        console.log(this.video, this.canvasVideo);
         if (this.isInitialized) {
             return;
         }
+        console.log('initialize');
         navigator.getUserMedia =
             navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
@@ -35,9 +40,7 @@ class VideoUtils {
                     height: VIDEO_HEIGHT,
                 },
             });
-            if (!this.video) {
-                this.video = document.createElement('video');
-            }
+            this.video = document.createElement('video');
             this.video.srcObject = stream;
             this.video.width = 480;
             this.video.height = 270;
@@ -51,10 +54,9 @@ class VideoUtils {
                 // setNet(mobilenet);
                 // const posenetInstance = await posenet.load();
                 // setNet(posenetInstance);
-                Entry.addEventListener('stop', this.reset.bind(this));
-
                 this.initialized = true;
                 this.video.play();
+                console.log('done initializing');
                 // getPose();
             };
         } else {
@@ -88,41 +90,58 @@ class VideoUtils {
     }
 
     turnOnWebcam() {
-        if (!this.isInitialized) {
-            this.initialize();
-        }
         if (!this.canvasVideo) {
-            //in case of createjs;
             this.canvasVideo = GEHelper.getVideoElement(this.video);
+            Entry.addEventListener('dispatchEventDidToggleStop', this.reset.bind(this));
         }
 
         // initialOption
         this.canvasVideo.x = -240;
         this.canvasVideo.y = -135;
+        this.canvasVideo.width = 480;
+        this.canvasVideo.height = 270;
         this.canvasVideo.scaleX = 0.75;
         this.canvasVideo.scaleY = 0.75;
         this.canvasVideo.alpha = 0.5;
         Entry.stage.canvas.addChildAt(this.canvasVideo, 2);
         createjs.Ticker.on('tick', Entry.stage.canvas);
-        console.log(this.canvasVideo);
     }
     // option change
     setOptions(target, value) {
         switch (target) {
-            case 'contrast':
-                this.setContrast(value);
+            case 'brightness':
+                this.setBrightness(value);
+                createjs.Ticker.on('tick', Entry.stage.canvas);
                 break;
             case 'opacity':
                 this.setAlpha(value);
                 break;
+            case 'hflip':
+                this.hflip();
+                break;
+            case 'vflip':
+                this.vflip();
+                break;
         }
     }
-    setContrast(brightVal) {
-        GEHelper.setContrast(this.canvasVideo, brightVal);
+    setBrightness(brightVal) {
+        GEHelper.setVideoBrightness(this.canvasVideo, brightVal);
         createjs.Ticker.on('tick', Entry.stage.canvas);
     }
     setAlpha(alphaVal) {
         this.canvasVideo.alpha = alphaVal / 100;
+        createjs.Ticker.on('tick', Entry.stage.canvas);
+    }
+    hflip() {
+        const { x, y, scaleX, scaleY, rotation, skewX, skewY, regX, regY } = this.canvasVideo;
+        this.canvasVideo.setTransform(-x, y, -scaleX, scaleY, rotation, skewX, skewY, regX, regY);
+        this.flipStatus.horizontal = !this.flipStatus.horizontal;
+        createjs.Ticker.on('tick', Entry.stage.canvas);
+    }
+    vflip() {
+        const { x, y, scaleX, scaleY, rotation, skewX, skewY, regX, regY } = this.canvasVideo;
+        this.canvasVideo.setTransform(x, -y, scaleX, -scaleY, rotation, skewX, skewY, regX, regY);
+        this.flipStatus.vertical = !this.flipStatus.vertical;
         createjs.Ticker.on('tick', Entry.stage.canvas);
     }
 }

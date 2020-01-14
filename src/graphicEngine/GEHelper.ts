@@ -166,7 +166,7 @@ class _GEHelper extends GEHelperBase {
         }
     }
 
-    setContrast(object: any, value: number): any {
+    setVideoBrightness(object: any, value: number): any {
         const target = object;
 
         if (this._isWebGL) {
@@ -176,8 +176,12 @@ class _GEHelper extends GEHelperBase {
             colorMatrix.contrast = recalculated;
             return object;
         } else {
-            const matrix = new createjs.ColorMatrix().adjustContrast(value);
+            const recalculated = (value * 255) / 100;
+            const matrix = new createjs.ColorMatrix().adjustBrightness(recalculated);
             target.filters = [new createjs.ColorMatrixFilter(matrix)];
+            target.cache(0, 0, target.image.videoWidth, target.image.videoHeight);
+            target.updateCache();
+
             return target;
         }
     }
