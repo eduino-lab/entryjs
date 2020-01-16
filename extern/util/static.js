@@ -395,6 +395,20 @@ EntryStatic.getAllBlocks = function() {
             blocks: ['audio_title', 'check_microphone', 'speech_to_text', 'get_microphone_volume'],
         },
         {
+            category: 'ai_utilize',
+            blocks: [
+                'aiUtilizeBlockAddButton',
+                'audio_title',
+                'check_microphone',
+                'speech_to_text',
+                'get_microphone_volume',
+                'tts_title',
+                'read_text',
+                'read_text_wait_with_block',
+                'set_tts_property',
+            ],
+        },
+        {
             category: 'expansion',
             blocks: [
                 'expansionBlockAddButton',
