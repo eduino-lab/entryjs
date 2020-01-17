@@ -10,7 +10,6 @@ class VideoUtils {
             horizontal: false,
             vertical: false,
         };
-        this.initialize();
     }
 
     reset() {
@@ -23,11 +22,9 @@ class VideoUtils {
     }
 
     async initialize() {
-        console.log(this.video, this.canvasVideo);
         if (this.isInitialized) {
             return;
         }
-        console.log('initialize');
         navigator.getUserMedia =
             navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 

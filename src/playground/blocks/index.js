@@ -24,8 +24,10 @@ const basicBlockList = [
 Entry.AI_UTILIZE_BLOCK = {};
 require('./block_ai_utilize_audio');
 require('./block_ai_utilize_tts');
+require('./block_ai_utilize_video');
 Entry.AI_UTILIZE_BLOCK_LIST = {
     audio: Entry.AI_UTILIZE_BLOCK.audio,
+    video: Entry.AI_UTILIZE_BLOCK.video,
     tts: Entry.AI_UTILIZE_BLOCK.tts,
 };
 
