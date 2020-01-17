@@ -92,7 +92,7 @@ Entry.AI_UTILIZE_BLOCK.audio.getBlocks = function() {
                         if (!AudioUtils.isAudioInitComplete) {
                             await AudioUtils.initUserMedia();
                         }
-                        const result = await audioUtils.startRecord(10 * 1000);
+                        const result = await AudioUtils.startRecord(10 * 1000);
                         Entry.dispatchEvent('audioRecordingDone');
                         resolve(result);
                     } catch (e) {
