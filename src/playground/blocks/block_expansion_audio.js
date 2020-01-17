@@ -1,4 +1,4 @@
-import AudioUtils from '../../util/AudioUtils';
+import AudioUtils from '../../util/audioUtils';
 import PromiseManager from '../../core/promiseManager';
 
 Entry.EXPANSION_BLOCK.audio = {

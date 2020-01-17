@@ -1,4 +1,4 @@
-import AudioUtils from '../../util/AudioUtils';
+import AudioUtils from '../../util/audioUtils';
 import PromiseManager from '../../core/promiseManager';
 
 Entry.AI_UTILIZE_BLOCK.audio = {
@@ -58,7 +58,7 @@ Entry.AI_UTILIZE_BLOCK.audio.getBlocks = function() {
             isNotFor: ['audio'],
             func(sprite, script) {
                 return new PromiseManager().Promise(async (resolve) => {
-                    const result = await audioUtils.checkUserMicAvailable();
+                    const result = await AudioUtils.checkUserMicAvailable();
                     resolve(result.toString());
                 });
             },
@@ -92,7 +92,7 @@ Entry.AI_UTILIZE_BLOCK.audio.getBlocks = function() {
                         if (!AudioUtils.isAudioInitComplete) {
                             await AudioUtils.initUserMedia();
                         }
-                        const result = await AudioUtils.startRecord(10 * 1000);
+                        const result = await audioUtils.startRecord(10 * 1000);
                         Entry.dispatchEvent('audioRecordingDone');
                         resolve(result);
                     } catch (e) {
@@ -123,10 +123,10 @@ Entry.AI_UTILIZE_BLOCK.audio.getBlocks = function() {
             func(sprite, script) {
                 return new PromiseManager().Promise(async (resolve) => {
                     try {
-                        if (!audioUtils.isAudioInitComplete) {
-                            await audioUtils.initUserMedia();
+                        if (!AudioUtils.isAudioInitComplete) {
+                            await AudioUtils.initUserMedia();
                         }
-                        resolve(audioUtils.currentVolume);
+                        resolve(AudioUtils.currentVolume);
                     } catch (e) {
                         console.log(e);
                         resolve('error');

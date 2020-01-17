@@ -4,7 +4,7 @@
 'use strict';
 
 import { GEHelper } from '../graphicEngine/GEHelper';
-import AudioUtils from '../util/AudioUtils';
+import AudioUtils from '../util/audioUtils';
 
 /**
  * Class for a engine.

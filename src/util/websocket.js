@@ -1,4 +1,4 @@
-import AudioUtils from './AudioUtils';
+import AudioUtils from './audioUtils';
 const io = require('socket.io-client');
 const GATEWAY_CONNECT_TIMEOUT = 5000;
 
